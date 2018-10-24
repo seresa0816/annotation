@@ -4,7 +4,7 @@
 //
 //***************************************************************************************//
 
-var classDraw 		= function(canv_id, width, height)
+var classDraw 		= function(scale, canv_id, width, height)
 {
 	var main 		= this;
 
@@ -30,7 +30,7 @@ var classDraw 		= function(canv_id, width, height)
 	main.textHeight = 200;
 
 	main.arrowType 	= 0;
-	main.scale 		= 0;
+	main.scale 		= scale;
 	main.unit 		= "";
 	main.parent 	= null;
 
@@ -67,7 +67,8 @@ var classDraw 		= function(canv_id, width, height)
 		main.margin_l = Math.max(0, $(window).width() / 2 - width / 2);
 
 		console.log(main.margin_l);
-
+		main.canvas.setZoom(main.scale);
+		main.canvas.renderAll();
 		// $("#" + main.canvasID).parent().css("left", main.margin_l + "px");
 	}
 

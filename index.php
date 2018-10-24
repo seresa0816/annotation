@@ -18,11 +18,6 @@
 <script type="text/javascript" src="js/library/SimpleAjaxUploader.js"></script>
 <script type="text/javascript" src="js/library/textlayerbuilder.js"></script>
 
-<script type="text/javascript" src="js/mine/main.js"></script>
-<script type="text/javascript" src="js/mine/draw.js"></script>
-<script type="text/javascript" src="js/mine/pdf.js"></script>
-
-
 <body>
 	<div id="header">
 		<ul>
@@ -41,7 +36,7 @@
 			</li>
 		</ul>
 	</div>
-	<div id="viewer"></div>
+	<div id="viewer" style="margin-top: 70px; margin-bottom: 20px;"></div>
 	<div id="popup_area">
 		<div id="popup_text" class="popup">
 			<textarea></textarea>
@@ -225,4 +220,7 @@
 			<dd><img src="img/icon_zoomout.png"></dd>
 		</dl>
 	</div>
+	<script type="text/javascript" src="js/mine/draw.js"></script>
+	<script type="text/javascript" src="js/mine/pdf.js"></script>
+	<script type="text/javascript" src="js/mine/main.js"></script>
 </body>

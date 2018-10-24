@@ -3,17 +3,19 @@ var classManagePDF 	= function()
 {
 	var main 	= this;
 
+	main.scale = 1;
 	main.page_num 		= 1;
 	main.curr_page 		= null;
-	main.curr_pdfurl  	= 'pdf/s_104.pdf';
+	main.curr_pdfurl = 'pdf/s_104.pdf';
 
 	main.init 	= function()
 	{
 		PDFJS.workerSrc = 'js/library/pdf.worker.js';
 	}
 
-	main.viewPDF = function(page_no, callback)
+	main.viewPDF = function(scale, page_no, callback)
 	{
+		main.scale = scale;
 		main.page_num = page_no;
 
 		PDFJS.getDocument(main.curr_pdfurl)
@@ -22,8 +24,7 @@ var classManagePDF 	= function()
 		})
 		.then(function(page) 
 		{
-			var scale = 1.5;
-			var viewport = page.getViewport(scale);
+			var viewport = page.getViewport(main.scale);
 			var html  = '<div class="page"><canvas id="canvas_pdf_' + page_no + '" class="canvas_pdf"></canvas>';
 				html += '<canvas id="canvas_fabric_' + page_no + '" class="canvas_fabric"></canvas></div>';
 
@@ -35,7 +36,7 @@ var classManagePDF 	= function()
 			canvas.height = viewport.height;
 			canvas.width = viewport.width;
 
-			main.obj_draw = new classDraw("canvas_fabric_" + page_no, viewport.width, viewport.height);
+			main.obj_draw = new classDraw(main.scale, "canvas_fabric_" + page_no, viewport.width, viewport.height);
 			callback(main.obj_draw);
 
 			var renderContext = {

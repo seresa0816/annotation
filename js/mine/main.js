@@ -14,7 +14,7 @@ var initEnv			= function()
 	main.pdfObj 	= null;
 	main.is_draw 	= 0;
 	main.selTool 	= 0;
-	main.scale 		= 1;
+	main.scale 		= 1.5;
 
 	main.init		= function()
 	{
@@ -25,14 +25,13 @@ var initEnv			= function()
 		main.initColors();
 		main.initFonts();
 		main.initSizes();
-
 		window.addEventListener( 'resize', main.initCSS );
 	}
 
 	main.initPDF 	= function()
 	{
 		main.pdfObj = new classManagePDF();
-		main.pdfObj.viewPDF(1, function(drawObj)
+		main.pdfObj.viewPDF(main.scale, 1, function(drawObj)
 		{
 			main.drawObj = drawObj;
 			main.drawObj.parent = main;
@@ -330,7 +329,10 @@ var initEnv			= function()
 					main.drawObj.copy();
 				break;
 				case 2 :
-					main.drawObj.paste($("#context_menu").position().left, $("#context_menu").position().top);
+					zoom = main.drawObj.canvas.getZoom();
+					xPos = $("#context_menu").offset().left - $('.canvas-container').offset().left;
+					yPos = $("#context_menu").offset().top - $('.canvas-container').offset().top; 
+					main.drawObj.paste(xPos/zoom, yPos/zoom);
 				break;
 				case 3 :
 					main.drawObj.delete();
@@ -379,14 +381,12 @@ var initEnv			= function()
 			{
 				main.scale += 0.1;
 			}
-
-			var page 	 = main.pdfObj.curr_page;
-			var viewport = page.getViewport(0.5 + main.scale);
-			var context  = main.pdfObj.curr_context;
+			var page = main.pdfObj.curr_page;
+			var viewport = page.getViewport(main.scale);
+			var context = main.pdfObj.curr_context;
 
 			context.viewport = viewport;
 			page.render(context);
-
 			main.drawObj.canvas.setZoom(main.scale);
 			main.drawObj.canvas.renderAll();
 		});
