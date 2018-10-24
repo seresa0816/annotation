@@ -36,7 +36,7 @@
 			</li>
 		</ul>
 	</div>
-	<div id="viewer" style="margin-top: 70px; margin-bottom: 20px;"></div>
+	<div id="viewer" style="margin-top: 70px; margin-bottom: 20px; margin-left: 70px; margin-right: 20px;"></div>
 	<div id="popup_area">
 		<div id="popup_text" class="popup">
 			<textarea></textarea>
