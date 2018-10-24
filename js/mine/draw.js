@@ -23,7 +23,6 @@ var classDraw = function (scale, canv_id, width, height) {
 	main.startPosition = { x: 0, y: 0 };
 	main.endPosition = { x: 0, y: 0 };
 	main.arrowSize = 10;
-	main.margin_l = 0;
 
 	main.textWidth = 300;
 	main.textHeight = 200;
@@ -59,12 +58,9 @@ var classDraw = function (scale, canv_id, width, height) {
 
 	main.initFabric = function () {
 		main.canvas = new fabric.Canvas(main.canvasID);
-		main.margin_l = Math.max(0, $(window).width() / 2 - width / 2);
 
-		console.log(main.margin_l);
 		main.canvas.setZoom(main.scale);
 		main.canvas.renderAll();
-		// $("#" + main.canvasID).parent().css("left", main.margin_l + "px");
 	}
 
 	main.initEvent = function () {
@@ -196,16 +192,22 @@ var classDraw = function (scale, canv_id, width, height) {
 							hasBorders: true,
 						});
 
+					canvasZoom = main.canvas.getZoom();
+					hPosX = $('.canvas-container').offset().left + main.drawObj.left * canvasZoom;
+					hPosY = $('.canvas-container').offset().top + main.drawObj.top * canvasZoom;
+					hWidth = main.drawObj.width * canvasZoom;
+					hHeight = main.drawObj.height * canvasZoom;
+
 					main.canvas.add(main.drawObj);
 					main.fontSize = $("#font_size h5").html() * 2;
 					main.fontColor = main.canvas.freeDrawingBrush.color;
 					$("#popup_text textarea").css({ "font-size": main.fontSize });
 					$("#popup_text textarea").css({ "color": main.fontColor });
-					$("#popup_area").css("left", main.drawObj.left + main.margin_l + "px");
-					$("#popup_area").css("top", main.drawObj.top + "px");
+					$("#popup_area").css("left", hPosX + "px");
+					$("#popup_area").css("top", hPosY + "px");
 					$("#popup_text textarea").focus();
-					$("#popup_text textarea").css("width", "200px");
-					$("#popup_text textarea").css("height", "150px");
+					$("#popup_text textarea").css("width", hWidth + "px");
+					$("#popup_text textarea").css("height", hHeight + "px");
 					main.showPopup("popup_text");
 
 					break;
@@ -279,8 +281,13 @@ var classDraw = function (scale, canv_id, width, height) {
 						});
 
 					main.canvas.add(main.drawObj);
-					$("#popup_area").css("left", left + main.margin_l + "px");
-					$("#popup_area").css("top", top + "px");
+
+					canvasZoom = main.canvas.getZoom();
+					hPosX = $('.canvas-container').offset().left + main.drawObj.left * canvasZoom;
+					hPosY = $('.canvas-container').offset().top + main.drawObj.top * canvasZoom;
+
+					$("#popup_area").css("left", hPosX + "px");
+					$("#popup_area").css("top", hPosY + "px");
 					main.showPopup("popup_picture");
 
 					break;
@@ -303,14 +310,18 @@ var classDraw = function (scale, canv_id, width, height) {
 						});
 
 					main.canvas.add(main.drawObj);
-					main.showPopup("popup_attach");
 
-					$("#popup_area").css("left", main.sPos.x + main.margin_l + "px");
-					$("#popup_area").css("top", main.sPos.y + "px");
-
+					canvasZoom = main.canvas.getZoom();
+					hPosX = $('.canvas-container').offset().left + main.drawObj.left * canvasZoom;
+					hPosY = $('.canvas-container').offset().top + main.drawObj.top * canvasZoom;
+					
+					$("#popup_area").css("left", hPosX + "px");
+					$("#popup_area").css("top", hPosY + "px");
+					
 					$("#popup_attach object").removeAttr("data");
 					$("#popup_attach a").attr("href", "#");
 					$("#popup_attach a").html("");
+					main.showPopup("popup_attach");
 					break;
 			}
 		});
@@ -434,10 +445,13 @@ var classDraw = function (scale, canv_id, width, height) {
 					}
 
 					if (!main.scale) {
-						main.showPopup("popup_scale");
+						canvasZoom = main.canvas.getZoom();
+						hPosX = $('.canvas-container').offset().left + main.drawObj.left * canvasZoom;
+						hPosY = $('.canvas-container').offset().top + main.drawObj.top * canvasZoom;
 
-						$("#popup_area").css("left", main.drawObj.left + main.margin_l + "px");
-						$("#popup_area").css("top", main.drawObj.top + "px");
+						$("#popup_area").css("left", hPosX + "px");
+						$("#popup_area").css("top", hPosY + "px");
+						main.showPopup("popup_scale");
 					}
 					break;
 			}

@@ -199,7 +199,12 @@ var initEnv = function () {
 
 		$("#btn_insert_img").on("click", function () {
 			var filename = $("#txt_url").val();
-			var param = { src: filename, selectable: true, isFront: 1, left: $("#popup_area").offset().left - main.drawObj.margin_l, top: $("#popup_area").offset().top };
+
+			canvasZoom = main.canvas.getZoom();
+			cPosX = ($("#popup_area").offset().left - $('.canvas-container').offset().left)/ canvasZoom;
+			cPosY = ($("#popup_area").offset().top - $('.canvas-container').offset().top) / canvasZoom;
+
+			var param = { src: filename, selectable: true, isFront: 1, left: cPosX, top: cPosY };
 
 			main.drawObj.addImage(param);
 			main.hidePopup();
@@ -275,7 +280,6 @@ var initEnv = function () {
 						main.showPopup("popup_text");
 
 					} else {
-						//hkb
 						var cm_box = obj._objects[0, 0].clone();
 						var cm_txt = obj._objects[0, 1].clone();
 
@@ -286,10 +290,18 @@ var initEnv = function () {
 						main.drawObj.drawObj.left = obj.left;
 						main.drawObj.drawObj.top = obj.top;
 
-						$("#popup_area").css("left", obj.left + "px");
-						$("#popup_area").css("top", obj.top + "px");
+						canvasZoom = main.drawObj.canvas.getZoom();
+						hPosX = $('.canvas-container').offset().left + obj.left * canvasZoom;
+						hPosY = $('.canvas-container').offset().top + obj.top * canvasZoom;
+						hWidth = obj.width * canvasZoom;
+						hHeight = obj.height * canvasZoom;
+
 						$("#popup_text textarea").val(cm_txt.text);
+						$("#popup_area").css("left", hPosX + "px");
+						$("#popup_area").css("top", hPosY + "px");
 						$("#popup_text textarea").focus();
+						$("#popup_text textarea").css("width", hWidth + "px");
+						$("#popup_text textarea").css("height", hHeight + "px");
 
 						main.showPopup("popup_text");
 
@@ -437,7 +449,10 @@ var initEnv = function () {
 				responseType: 'json',
 
 				onComplete: function (filename, response) {
-					var param = { src: "tmp/" + filename, selectable: true, isFront: 1, left: $("#popup_area").offset().left - main.drawObj.margin_l, top: $("#popup_area").offset().top };
+					cPosX = ($("#popup_area").offset().left - $('.canvas-container').offset().left) / canvasZoom;
+					cPosY = ($("#popup_area").offset().top - $('.canvas-container').offset().top) / canvasZoom;
+
+					var param = { src: "tmp/" + filename, selectable: true, isFront: 1, left: cPosX, top: cPosY };
 
 					main.drawObj.drawObj.src = "tmp/" + filename;
 					$("#popup_image img").attr("src", "tmp/" + filename);
@@ -495,6 +510,7 @@ var initEnv = function () {
 					if (main.drawObj.selectObj) {
 						switch (main.drawObj.selectObj.type) {
 							case "comment":
+							case "rect":
 								main.drawObj.selectObj._objects[1].set("fill", "#" + hex);
 								break;
 							case "ruler_group":
@@ -502,6 +518,7 @@ var initEnv = function () {
 								break;
 							case "text":
 								main.drawObj.selectObj.set("fill", "#" + hex);
+								break;
 							case "path":
 								main.drawObj.selectObj.set("stroke", "#" + hex);
 								break;
