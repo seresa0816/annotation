@@ -164,7 +164,7 @@
 			</dd>
 			<dd class="expand">
 				<h3 id="color_area"></h3>
-				<p>Choose</p>
+				<p>Stroke</p>
 			</dd>
 			<dd class="expand" id="background_area">
 				<h3 id="color_background"></h3>
